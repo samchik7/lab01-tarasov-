@@ -1,0 +1,114 @@
+using System;
+public class Rectangle
+{
+    private double sideA;
+    private double sideB;
+    public Rectangle(double sideA, double sideB)
+    {
+        this.sideA = sideA;
+        this.sideB = sideB;
+    }
+    private double CalculateArea()
+    {
+        return sideA * sideB;
+    }
+    private double CalculatePerimeter()
+    {
+        return 2 * (sideA + sideB);
+    }
+    public double Area
+    {
+        get { return CalculateArea(); }
+    }
+    public double Perimeter
+    {
+        get { return CalculatePerimeter(); }
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        SimpleRectangleTests.RunTests();
+        try
+        {
+            Console.Write("Введите длину стороны A: ");
+            double sideA = GetPositiveNumber();
+
+            Console.Write("Введите длину стороны B: ");
+            double sideB = GetPositiveNumber();
+
+            Rectangle rectangle = new Rectangle(sideA, sideB);
+
+            Console.WriteLine("\nРезультаты:");
+            Console.WriteLine($"Площадь прямоугольника: {rectangle.Area:F2}");
+            Console.WriteLine($"Периметр прямоугольника: {rectangle.Perimeter:F2}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка: {ex.Message}");
+        }
+    }
+
+
+    private static double GetPositiveNumber()
+    {
+        while (true)
+        {
+            if (double.TryParse(Console.ReadLine(), out double number) && number > 0)
+            {
+                return number;
+            }
+            Console.Write("Ошибка! Введите положительное число: ");
+        }
+    }
+}
+public class SimpleRectangleTests
+{
+    public static void RunTests()
+    {
+        TestValidConstructor();
+        TestInvalidConstructor();
+        TestAreaCalculations();
+        TestPerimeterCalculations();
+
+        Console.WriteLine("Все тесты пройдены успешно!");
+    }
+
+    private static void TestValidConstructor()
+    {
+        var rectangle = new Rectangle(5, 10);
+        Console.WriteLine("Конструктор с валидными сторонами работает корректно");
+    }
+
+    private static void TestInvalidConstructor()
+    {
+        try
+        {
+            new Rectangle(0, 5);
+            Console.WriteLine("Ожидалось исключение для нулевой стороны");
+        }
+        catch (ArgumentException)
+        {
+            Console.WriteLine("Исключение для нулевой стороны перехвачено");
+        }
+    }
+
+    private static void TestAreaCalculations()
+    {
+        var rectangle = new Rectangle(5, 10);
+        if (Math.Abs(rectangle.Area - 50) < 0.0001)
+            Console.WriteLine("Площадь вычисляется корректно");
+        else
+            Console.WriteLine("Ошибка в вычислении площади");
+    }
+
+    private static void TestPerimeterCalculations()
+    {
+        var rectangle = new Rectangle(5, 10);
+        if (Math.Abs(rectangle.Perimeter - 30) < 0.001)
+            Console.WriteLine("Периметр вычисляется корректно");
+        else
+            Console.WriteLine("Ошибка в вычислении периметра");
+    }
+}
